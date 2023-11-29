@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Bill from "./Bill";
+import Percentage from "./Percentage";
+import Total from "./Total";
+import ResetBtn from "./ResetBtn";
 
-function App() {
+export default function App() {
+  const [bill, setBill] = useState("");
+  const [userTip, setUserTip] = useState(0);
+  const [friendTip, setFriendTip] = useState(0);
+
+  function handleReset() {
+    setBill("");
+    setUserTip(0);
+    setFriendTip(0);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Bill bill={bill} onSetBill={setBill} />
+      <Percentage tip={userTip} onSetTip={setUserTip}>
+        How did you like the service?
+      </Percentage>
+      <Percentage tip={friendTip} onSetTip={setFriendTip}>
+        How did your friend like the service?
+      </Percentage>
+      {bill > 0 && (
+        <>
+          <Total bill={bill} userTip={userTip} friendTip={friendTip} />
+          <ResetBtn onReset={handleReset} />
+        </>
+      )}
+    </>
   );
 }
-
-export default App;
